@@ -6,6 +6,7 @@ constexpr float SPACE_WIDTH = 160.0f;
 #include <GLFW/glfw3.h>
 #include <glad/gl.h>
 #include <print>
+#include <printf.h>
 
 #include <key.hpp>
 

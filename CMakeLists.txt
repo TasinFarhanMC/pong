@@ -10,28 +10,38 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 find_package(OpenGL REQUIRED)
 
-include(FetchContent)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/get_cpm.cmake)
 
 option(GLM_ENABLE_CXX_23 ON)
 option(GLM_ENABLE_SIMD_SSE4_2 ON)
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/vendor/glm)
-add_subdirectory(${CMAKE_SOURCE_DIR}/vendor/betr)
-add_subdirectory(${CMAKE_SOURCE_DIR}/vendor/glfw)
+cpmaddpackage(URI "gh:glfw/glfw#3.4" OPTIONS "GLM_ENABLE_SIMD_SSE4_2 ON"
+              "GLM_ENABLE_CXX_23 ON")
+cpmaddpackage("gh:g-truc/glm#1.0.1")
+cpmaddpackage(NAME Betr GIT_REPOSITORY https://github.com/tasinfarhanmc/betr
+              GIT_TAG f548aa6050dbeca9985307d9f9232d1a58594186)
+cpmaddpackage("gh:g-truc/glm#1.0.1")
+cpmaddpackage(
+  NAME
+  Imgui
+  GIT_REPOSITORY
+  "https://github.com/ocornut/imgui"
+  VERSION
+  1.92.1
+  DOWNLOAD_ONLY)
 
 add_library(
   imgui STATIC
-  ${CMAKE_SOURCE_DIR}/vendor/imgui/imgui.cpp
-  ${CMAKE_SOURCE_DIR}/vendor/imgui/imgui_demo.cpp
-  ${CMAKE_SOURCE_DIR}/vendor/imgui/imgui_draw.cpp
-  ${CMAKE_SOURCE_DIR}/vendor/imgui/imgui_widgets.cpp
-  ${CMAKE_SOURCE_DIR}/vendor/imgui/imgui_tables.cpp
-  ${CMAKE_SOURCE_DIR}/vendor/imgui/backends/imgui_impl_glfw.cpp
-  ${CMAKE_SOURCE_DIR}/vendor/imgui/backends/imgui_impl_opengl3.cpp)
+  ${Imgui_SOURCE_DIR}/imgui.cpp
+  ${Imgui_SOURCE_DIR}/imgui_demo.cpp
+  ${Imgui_SOURCE_DIR}/imgui_draw.cpp
+  ${Imgui_SOURCE_DIR}/imgui_widgets.cpp
+  ${Imgui_SOURCE_DIR}/imgui_tables.cpp
+  ${Imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
+  ${Imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp)
 
-target_include_directories(
-  imgui PUBLIC ${CMAKE_SOURCE_DIR}/vendor/imgui
-               ${CMAKE_SOURCE_DIR}/vendor/imgui/backends)
+target_include_directories(imgui PUBLIC ${Imgui_SOURCE_DIR}
+                                        ${Imgui_SOURCE_DIR}/backends)
 
 target_link_libraries(imgui PUBLIC glfw)
 
@@ -42,4 +52,4 @@ file(GLOB_RECURSE SRC_FILES "${SRC_DIR}/*.c" "${SRC_DIR}/*.cpp")
 
 add_executable(pong "${SRC_FILES}")
 target_include_directories(pong PRIVATE ${INCLUDE_DIRS})
-target_link_libraries(pong PRIVATE OpenGL::GL glm::glm glfw betr imgui)
+target_link_libraries(pong PRIVATE OpenGL::GL glm glfw betr imgui)
