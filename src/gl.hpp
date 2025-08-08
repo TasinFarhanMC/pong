@@ -1,7 +1,7 @@
 #pragma once
 
 #include <betr/init_list.hpp>
-#include <glad/gl.h>
+#include <glext/gl.h>
 #include <print>
 
 namespace gl {

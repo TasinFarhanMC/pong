@@ -21,6 +21,7 @@ cpmaddpackage("gh:g-truc/glm#1.0.1")
 cpmaddpackage(NAME Betr GIT_REPOSITORY https://github.com/tasinfarhanmc/betr
               GIT_TAG f548aa6050dbeca9985307d9f9232d1a58594186)
 cpmaddpackage("gh:g-truc/glm#1.0.1")
+cpmaddpackage("gh:tasinfarhanmc/GLExt@3.3.0")
 cpmaddpackage(
   NAME
   Imgui
@@ -52,4 +53,4 @@ file(GLOB_RECURSE SRC_FILES "${SRC_DIR}/*.c" "${SRC_DIR}/*.cpp")
 
 add_executable(pong "${SRC_FILES}")
 target_include_directories(pong PRIVATE ${INCLUDE_DIRS})
-target_link_libraries(pong PRIVATE OpenGL::GL glm glfw betr imgui)
+target_link_libraries(pong PRIVATE OpenGL::GL glm glfw betr imgui GLExt)

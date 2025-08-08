@@ -9,7 +9,7 @@
 #include <fstream>
 #include <print>
 
-#include <glad/gl.h>
+#include <glext/gl.h>
 
 static UnorderedMap<const char *, unsigned int> map;
 static long reload_time;

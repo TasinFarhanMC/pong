@@ -4,18 +4,22 @@ constexpr float SPACE_HEIGHT = 90.0f;
 constexpr float SPACE_WIDTH = 160.0f;
 
 #include <GLFW/glfw3.h>
-#include <glad/gl.h>
+#include <glext/gl.h>
 #include <print>
 #include <printf.h>
 
 #include <key.hpp>
 
-static void glfwErrorCallback(int error, const char *desc) { std::print("GLFW Error ({}): {}", error, desc); }
+static void glfwErrorCallback(int error, const char *desc) {
+  std::print("GLFW Error ({}): {}", error, desc);
+}
 
 int render(GLFWwindow *window);
 
 int main() {
-  glfwSetErrorCallback([](int error, const char *desc) { std::print("GLFW Error ({}): {}", error, desc); });
+  glfwSetErrorCallback([](int error, const char *desc) {
+    std::print("GLFW Error ({}): {}", error, desc);
+  });
   if (!glfwInit()) {
     std::println("Failed to initialize GLFW");
     return -1;
@@ -32,7 +36,8 @@ int main() {
     glfwTerminate();
     return -1;
   }
-  glfwSetWindowSize(window, monitor_info->width * 2 / 3, monitor_info->height * 2 / 3);
+  glfwSetWindowSize(window, monitor_info->width * 2 / 3,
+                    monitor_info->height * 2 / 3);
   glfwSetWindowPos(window, monitor_info->width / 6, monitor_info->height / 6);
 
   glfwMakeContextCurrent(window);
@@ -41,19 +46,20 @@ int main() {
     return -1;
   }
 
-  glfwSetFramebufferSizeCallback(window, [](GLFWwindow *window, int width, int height) {
-    float min = std::min(width / SPACE_WIDTH, height / SPACE_HEIGHT);
-    float m_width = min * SPACE_WIDTH;
-    float m_height = min * SPACE_HEIGHT;
+  glfwSetFramebufferSizeCallback(
+      window, [](GLFWwindow *window, int width, int height) {
+        float min = std::min(width / SPACE_WIDTH, height / SPACE_HEIGHT);
+        float m_width = min * SPACE_WIDTH;
+        float m_height = min * SPACE_HEIGHT;
 
-    glViewport(std::abs(width - m_width) / 2, std::abs(height - m_height) / 2, m_width, m_height);
-  });
+        glViewport(std::abs(width - m_width) / 2,
+                   std::abs(height - m_height) / 2, m_width, m_height);
+      });
   KeyReg::init(window);
 
   glfwSwapInterval(1);
   int code = render(window);
 
-  gladLoaderUnloadGL();
   glfwDestroyWindow(window);
   glfwTerminate();
 
@@ -98,7 +104,8 @@ struct Boost {
   enum State { Idle, Boosting, Recoiling } state = Idle;
 
   void update(float delta_t) {
-    if (state == Idle) return;
+    if (state == Idle)
+      return;
 
     timer += delta_t;
 
@@ -128,7 +135,8 @@ void update_boost(Collider &pad, float delta_t) {
   static float timer = 0.0f;
   static float pos = pad.pos.x;
 
-  if (state == Idle) return;
+  if (state == Idle)
+    return;
 
   timer += delta_t;
 
@@ -177,7 +185,8 @@ struct Paddle {
   }
 
   void update(float delta_t) {
-    if (state == Idle) return;
+    if (state == Idle)
+      return;
 
     timer += delta_t;
 
@@ -205,17 +214,25 @@ struct Paddle {
 void update_pad(Collider &pad, float delta_t) {
   pad.pos += pad.vel * delta_t;
 
-  if (pad.top() > SPACE_HEIGHT) { pad.top(SPACE_HEIGHT); }
-  if (pad.bottom() < 0) { pad.bottom(0); }
+  if (pad.top() > SPACE_HEIGHT) {
+    pad.top(SPACE_HEIGHT);
+  }
+  if (pad.bottom() < 0) {
+    pad.bottom(0);
+  }
 }
 
 float calc_pad_e(Collider &pad, Collider &ball) {
-  return (std::abs(pad.pos.y + pad.scale.y / 2.0f - ball.pos.y - ball.scale.y / 2.0f) / (pad.scale.y - ball.scale.y)) * 2 * PADDLE_D + 1;
+  return (std::abs(pad.pos.y + pad.scale.y / 2.0f - ball.pos.y -
+                   ball.scale.y / 2.0f) /
+          (pad.scale.y - ball.scale.y)) *
+             2 * PADDLE_D +
+         1;
 }
 
 Vec2 get_ball_vel() {
   float r = 100.0f;
-  static std::mt19937 gen(std::random_device {}());
+  static std::mt19937 gen(std::random_device{}());
   constexpr float deg_to_rad = std::numbers::pi_v<float> / 180.0f;
 
   // 50% chance to go left or right
@@ -223,11 +240,14 @@ Vec2 get_ball_vel() {
   bool right_side = direction_dist(gen);
 
   // Angle range: -60 to +60 degrees
-  std::uniform_real_distribution<float> angle_dist(-45.0f * deg_to_rad, 45.0f * deg_to_rad);
+  std::uniform_real_distribution<float> angle_dist(-45.0f * deg_to_rad,
+                                                   45.0f * deg_to_rad);
   float angle = angle_dist(gen);
 
   // Flip across the y-axis if going left
-  if (!right_side) { angle = std::numbers::pi_v<float> - angle; }
+  if (!right_side) {
+    angle = std::numbers::pi_v<float> - angle;
+  }
 
   // 50% chance to flip the y component (vertical direction)
   std::uniform_int_distribution<int> flip_y_dist(0, 1);
@@ -270,8 +290,8 @@ int render(GLFWwindow *window) {
   Collider pad1(quad_data[1]);
   Collider ball(quad_data[2], get_ball_vel());
 
-  Paddle pad0_anim {pad0};
-  Paddle pad1_anim {pad1};
+  Paddle pad0_anim{pad0};
+  Paddle pad1_anim{pad1};
 
   auto reset_colliders = [&]() {
     ball.vel = get_ball_vel();
@@ -373,8 +393,12 @@ int render(GLFWwindow *window) {
     if (acc_t >= 1.0f / 30) {
       glfwPollEvents();
 
-      if (KeyReg::get(GLFW_KEY_R)) { Shader::reload(); }
-      if (KeyReg::get(GLFW_KEY_ESCAPE)) { glfwSetWindowShouldClose(window, true); }
+      if (KeyReg::get(GLFW_KEY_R)) {
+        Shader::reload();
+      }
+      if (KeyReg::get(GLFW_KEY_ESCAPE)) {
+        glfwSetWindowShouldClose(window, true);
+      }
       if (KeyReg::get(GLFW_KEY_BACKSPACE)) {
         ball.vel = get_ball_vel();
         ball.pos = Vec2(78.5f, 43.5f);
@@ -389,7 +413,8 @@ int render(GLFWwindow *window) {
         pad0.vel.y = -SPACE_HEIGHT;
       }
 
-      if (!(glfwGetKey(window, GLFW_KEY_UP) ^ glfwGetKey(window, GLFW_KEY_DOWN))) {
+      if (!(glfwGetKey(window, GLFW_KEY_UP) ^
+            glfwGetKey(window, GLFW_KEY_DOWN))) {
         pad1.vel.y = 0.0f;
       } else if (glfwGetKey(window, GLFW_KEY_UP)) {
         pad1.vel.y = SPACE_HEIGHT;
@@ -404,14 +429,19 @@ int render(GLFWwindow *window) {
         paused = true;
       }
 
-      if (KeyReg::get(GLFW_KEY_ENTER)) { paused = !paused; }
-      if (KeyReg::get(GLFW_KEY_RIGHT_SHIFT) && glfwGetKey(window, GLFW_KEY_LEFT_CONTROL)) {
+      if (KeyReg::get(GLFW_KEY_ENTER)) {
+        paused = !paused;
+      }
+      if (KeyReg::get(GLFW_KEY_RIGHT_SHIFT) &&
+          glfwGetKey(window, GLFW_KEY_LEFT_CONTROL)) {
         paused = false;
       } else if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL)) {
         paused = true;
       }
 
-      if (KeyReg::get(GLFW_KEY_SPACE)) { pad0_anim.start_boost(distance, boost_t, recoil_t); }
+      if (KeyReg::get(GLFW_KEY_SPACE)) {
+        pad0_anim.start_boost(distance, boost_t, recoil_t);
+      }
 
       acc_t -= 1.0f / 30;
     }
