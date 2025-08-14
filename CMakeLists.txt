@@ -12,14 +12,12 @@ find_package(OpenGL REQUIRED)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/get_cpm.cmake)
 
-option(GLM_ENABLE_CXX_23 ON)
-option(GLM_ENABLE_SIMD_SSE4_2 ON)
-
 cpmaddpackage(URI "gh:glfw/glfw#3.4" OPTIONS "GLM_ENABLE_SIMD_SSE4_2 ON"
               "GLM_ENABLE_CXX_23 ON")
 cpmaddpackage("gh:g-truc/glm#1.0.1")
 cpmaddpackage(NAME Betr GIT_REPOSITORY https://github.com/tasinfarhanmc/betr
               GIT_TAG f548aa6050dbeca9985307d9f9232d1a58594186)
+# DOWNLOAD STB_IMAGE.h
 cpmaddpackage("gh:g-truc/glm#1.0.1")
 cpmaddpackage("gh:tasinfarhanmc/GLExt@3.3.0")
 cpmaddpackage(
