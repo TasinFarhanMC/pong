@@ -2,17 +2,11 @@
 #include <GLFW/glfw3.h>
 #include <betr/array.hpp>
 
-class KeyReg {
-public:
-  static void init(GLFWwindow *window);
-  static bool get(int key);
+namespace key {
+enum class Event : char { Release = GLFW_RELEASE, Press = GLFW_PRESS, Repeat = GLFW_REPEAT, Expired };
 
-  KeyReg(KeyReg &&) = delete;
-  KeyReg(const KeyReg &) = delete;
-  KeyReg &operator=(KeyReg &&) = delete;
-  KeyReg &operator=(const KeyReg &) = delete;
+void set_callback(GLFWwindow *window);
+bool get(int key);
+bool get_event(Event event, int key);
 
-private:
-  static betr::Array<bool, GLFW_KEY_LAST> keys;
-  static void callback(GLFWwindow *window, int key, int scancode, int action, int mods);
-};
+} // namespace key

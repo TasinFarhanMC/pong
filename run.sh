@@ -4,7 +4,7 @@ set -e
 DIR="$(dirname "$(realpath "$0")")"
 cd "$DIR"
 
-echo "Press 'r' to rerun cmake, 'g' to run gdb, or Enter to build and run gdb:"
+echo "Press 'r' to rerun cmake, 'g' to run gdb, or Enter to build and run:"
 read -r -n1 key
 echo
 
@@ -14,15 +14,15 @@ if [[ "$key" == "r" ]]; then
   echo "Building..."
   cmake --build --preset debug
   echo "Running..."
-  ./bin/pong
+  ./bin/pong "$@"
 elif [[ "$key" == "g" ]]; then
   echo "Building..."
   cmake --build --preset debug
   echo "Running gdb..."
-  gdb ./bin/pong
+  gdb --args ./bin/pong "$@"
 else
   echo "Building..."
   cmake --build --preset debug
   echo "Running..."
-  ./bin/pong
+  ./bin/pong "$@"
 fi

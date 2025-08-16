@@ -1,7 +1,9 @@
 build/
 bin/
 lib/
-out/
-compile_commands.json
 .cache/
 imgui.ini
+*.log
+.svg
+.data
+.xcf

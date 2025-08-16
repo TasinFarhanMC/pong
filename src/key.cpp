@@ -1,15 +1,24 @@
 #include "key.hpp"
 #include <GLFW/glfw3.h>
-#include <betr/namespace.hpp>
-#include <print>
 
-Array<bool, GLFW_KEY_LAST> KeyReg::keys;
+using namespace key;
 
-bool KeyReg::get(int key) {
-  bool press = keys[key];
-  keys[key] = false;
-  return press;
+static GLFWwindow *window;
+static Event events[GLFW_KEY_LAST + 1];
+
+namespace key {
+void set_callback(GLFWwindow *window) {
+  ::window = window;
+
+  glfwSetKeyCallback(window, [](GLFWwindow *window, int key, int scancode, int action, int mods) { events[key] = static_cast<Event>(action); });
 }
-void KeyReg::init(GLFWwindow *window) { glfwSetKeyCallback(window, callback); }
 
-void KeyReg::callback(GLFWwindow *window, int key, int scancode, int action, int mods) { keys[key] = action == 1; }
+bool get(int key) { return glfwGetKey(window, key); }
+
+bool get_event(Event event, int key) {
+  if (events[key] != event) { return false; }
+
+  events[key] = Event::Expired;
+  return true;
+};
+} // namespace key
