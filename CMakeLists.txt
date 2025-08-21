@@ -44,6 +44,9 @@ set(INCLUDE_DIRS "${SRC_DIR}")
 
 file(GLOB_RECURSE SRC_FILES "${SRC_DIR}/*.c" "${SRC_DIR}/*.cpp")
 
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 add_executable(pong "${SRC_FILES}")
 target_include_directories(pong PRIVATE ${INCLUDE_DIRS})
 target_link_libraries(
@@ -57,5 +60,4 @@ target_link_libraries(
           CLI11
           EnTT)
 target_compile_definitions(pong PRIVATE GLFW_INCLUDE_NONE)
-target_compile_features(pong PRIVATE cxx_std_23)
 set_target_properties(pong PROPERTIES CXX_SCAN_FOR_MODULES OFF)

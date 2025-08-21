@@ -13,10 +13,14 @@
 #include <logger.hpp>
 #include <print>
 #include <scenes/scene.hpp>
+#include <thread>
 
 #include "global.hpp"
+#include "mathtypes.hpp"
 
-extern Scene MainScene;
+extern Scene main_scene;
+
+using namespace std::chrono_literals;
 
 Scene *node;
 GLFWwindow *window;
@@ -28,6 +32,11 @@ void request_exit(int code) {
   exit_code = code;
   running = false;
 }
+
+struct ViewPort {
+  AtomicBool dirty = false;
+  vec4 data = {};
+} view_port;
 
 int main(int argc, char *argv[]) {
   CLI::App cli_app("", "Pong");
@@ -69,7 +78,8 @@ int main(int argc, char *argv[]) {
     float m_width = min * SPACE_WIDTH;
     float m_height = min * SPACE_HEIGHT;
 
-    gl_viewport(std::abs(width - m_width) / 2, std::abs(height - m_height) / 2, m_width, m_height);
+    view_port.dirty.store(true, std::memory_order_relaxed);
+    view_port.data = {std::abs(width - m_width) / 2, std::abs(height - m_height) / 2, m_width, m_height};
   });
 
   gl_enable(GL_BLEND);
@@ -85,8 +95,9 @@ int main(int argc, char *argv[]) {
   ImGui_ImplOpenGL3_Init("#version 330");
 
   key::set_callback(window);
+  glfwSwapInterval(0);
 
-  MainScene.set(&node);
+  main_scene.set(&node);
   node->init();
 
   LOG_INFO("Init", "Starting Loop");
@@ -96,29 +107,31 @@ int main(int argc, char *argv[]) {
     auto next = HighResClock::now();
 
     while (running) {
+      glfwPollEvents();
+
       node->update(delta_t);
+
+      if (view_port.dirty.exchange(false, std::memory_order_acquire)) {
+        gl_viewport(view_port.data.x, view_port.data.y, view_port.data.z, view_port.data.w);
+      }
 
       next += TICK_DUR;
       std::this_thread::sleep_until(next);
     }
   });
 
+  auto start = HighResClock::now();
   while (running) {
-    static float start_t = glfwGetTime(), end_t = 0, delta_t = 0, acc_t = 0;
-
     gl_clear_color(0.1, 0.2, 0.3, 1.0f);
     gl_clear(GL_COLOR_BUFFER_BIT);
 
-    node->render();
+    node->render(delta_t);
 
     glfwSwapBuffers(window);
 
-    end_t = glfwGetTime();
-    delta_t = end_t - start_t;
-    start_t = end_t;
-    acc_t += delta_t;
-
-    if (acc_t >= TICK_TIME) { glfwPollEvents(); }
+    auto now = HighResClock::now();
+    delta_t = (now - start).count() / (float)Nano::den;
+    start = now;
   }
 
   LOG_INFO("Init", "Clean Up");

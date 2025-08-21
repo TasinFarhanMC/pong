@@ -4,12 +4,12 @@
 #include <betr/unordered_set.hpp>
 
 struct Scene {
-  betr::Function<bool(void)> init_func;
-  betr::Function<void()> render;
-  betr::Function<void(float)> update;
+  bool (*init_func)();
+  void (*render)(float);
+  void (*update)(float);
   void (*clean_func)();
 
-  Scene(betr::Function<bool(void)> init, betr::Function<void()> render, betr::Function<void(float)> update, void (*clean)())
+  Scene(bool (*init)(void), void (*render)(float), void (*update)(float), void (*clean)())
       : init_func(init),
         render(render),
         update(update),

@@ -4,6 +4,5 @@ lib/
 .cache/
 imgui.ini
 *.log
-.svg
-.data
-.xcf
+*.data*
+*.svg*
