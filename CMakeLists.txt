@@ -40,7 +40,7 @@ target_link_libraries(imgui PUBLIC glfw)
 # TODO: DOWNLOAD IMAGE LOADER
 
 set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
-set(INCLUDE_DIRS "${SRC_DIR}")
+set(INCLUDE_DIRS "${SRC_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 file(GLOB_RECURSE SRC_FILES "${SRC_DIR}/*.c" "${SRC_DIR}/*.cpp")
 
@@ -49,15 +49,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(pong "${SRC_FILES}")
 target_include_directories(pong PRIVATE ${INCLUDE_DIRS})
-target_link_libraries(
-  pong
-  PRIVATE OpenGL::GL
-          glm
-          glfw
-          imgui
-          betr
-          glext
-          CLI11
-          EnTT)
+target_link_libraries(pong PRIVATE OpenGL::GL glm glfw imgui CLI11 EnTT)
 target_compile_definitions(pong PRIVATE GLFW_INCLUDE_NONE)
 set_target_properties(pong PROPERTIES CXX_SCAN_FOR_MODULES OFF)

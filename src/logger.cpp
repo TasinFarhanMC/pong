@@ -1,5 +1,4 @@
 #include "logger.hpp"
-#include <betr/namespace.hpp>
 
 #include <chrono>
 #include <fstream>
@@ -11,7 +10,7 @@ static std::ofstream file;
 static bool console;
 
 namespace logger {
-betr::String current_time() {
+std::string current_time() {
   using namespace std::chrono;
   auto now = system_clock::now();
   auto in_time_t = system_clock::to_time_t(now);
@@ -27,7 +26,7 @@ bool init(bool console) {
   return file.is_open();
 }
 
-void write(const String &str) {
+void write(const std::string &str) {
   if (console) { std::cout << str; }
   file << str;
 }

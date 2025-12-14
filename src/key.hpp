@@ -1,6 +1,5 @@
 #pragma once
 #include <GLFW/glfw3.h>
-#include <betr/array.hpp>
 
 namespace key {
 enum class Event : char { Release = GLFW_RELEASE, Press = GLFW_PRESS, Repeat = GLFW_REPEAT, Expired };

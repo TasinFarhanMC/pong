@@ -13,7 +13,7 @@ read -r -n1 key
 echo
 
 BUILD_CMD="cmake --build --preset debug"
-EXEC="./bin/pong $@"
+EXEC="./bin/pong -c"
 
 if [[ "$key" == "r" ]]; then
   echo "Running cmake configuration..."

@@ -1,13 +1,12 @@
 #pragma once
-#include <betr/format.hpp>
-#include <betr/string.hpp>
+#include <format>
 
 namespace logger {
-betr::String current_time();
+std::string current_time();
 
 bool init(bool console);
 void clean();
-void write(const betr::String &str);
+void write(const std::string &str);
 
 #define LOG_INFO(name, fmt, ...)                                                                                                                       \
   logger::write(                                                                                                                                       \

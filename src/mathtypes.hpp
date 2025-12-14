@@ -1,9 +1,10 @@
 #pragma once
 
-#include <glm/ext/vector_float2.hpp>
-#include <glm/ext/vector_float3.hpp>
-#include <glm/ext/vector_float4.hpp>
+#include <glm/glm.hpp>
 
 using glm::vec2;
 using glm::vec3;
 using glm::vec4;
+
+using glm::u8vec2;
+using glm::uvec2;
