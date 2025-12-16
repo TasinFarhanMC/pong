@@ -9,10 +9,6 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/get_cpm.cmake)
 cpmaddpackage(URI "gh:glfw/glfw#3.4" OPTIONS "GLM_ENABLE_SIMD_SSE4_2 ON"
               "GLM_ENABLE_CXX_23 ON")
 cpmaddpackage("gh:g-truc/glm#1.0.1")
-cpmaddpackage("gh:tasinfarhanmc/betr#main")
-cpmaddpackage("gh:g-truc/glm#1.0.1")
-cpmaddpackage("gh:tasinfarhanmc/glext@3.3.2")
-cpmaddpackage("gh:CLIUtils/CLI11@2.5.0")
 cpmaddpackage("gh:skypjack/entt@3.15.0")
 cpmaddpackage(
   NAME
@@ -49,6 +45,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(pong "${SRC_FILES}")
 target_include_directories(pong PRIVATE ${INCLUDE_DIRS})
-target_link_libraries(pong PRIVATE OpenGL::GL glm glfw imgui CLI11 EnTT)
+target_link_libraries(pong PRIVATE OpenGL::GL glm glfw imgui EnTT)
 target_compile_definitions(pong PRIVATE GLFW_INCLUDE_NONE)
 set_target_properties(pong PROPERTIES CXX_SCAN_FOR_MODULES OFF)

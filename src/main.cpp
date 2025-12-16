@@ -1,4 +1,3 @@
-#include <CLI/CLI.hpp>
 #include <GLFW/glfw3.h>
 #include <chrono>
 #include <game.hpp>
@@ -13,11 +12,13 @@
 using namespace std::chrono_literals;
 
 int main(int argc, char *argv[]) {
-  CLI::App cli_app("", "Pong");
-  std::string name = "world";
   bool console = false;
-  cli_app.add_flag("-c,--console", console, "Echo logger output to console");
-  CLI11_PARSE(cli_app, argc, argv);
+
+  if (argc >= 2) {
+    std::string arg = argv[1];
+    if (arg == "--c" || arg == "--console") { console = true; }
+  }
+
   if (!logger::init(console)) { std::println("Unable to init logger"); };
 
   glfwSetErrorCallback([](int error, const char *desc) { LOG_ERROR("Init", "GLFW Error ({}): {}", error, desc); });
@@ -90,13 +91,14 @@ int main(int argc, char *argv[]) {
     glfwPollEvents();
 
     auto now = std::chrono::high_resolution_clock::now();
-    delta_t = (now - start).count();
+    delta_t = float((now - start).count()) / std::nano::den;
     start = now;
     accumilator += delta_t;
 
     if (accumilator >= TICK_TIME) {
       if (key::get_event(key::Event::Press, GLFW_KEY_ESCAPE)) { glfwSetWindowShouldClose(window, true); }
       update(delta_t);
+      accumilator -= TICK_TIME;
     }
   }
 

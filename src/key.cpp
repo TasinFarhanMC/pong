@@ -1,4 +1,5 @@
 #include "key.hpp"
+#include "imgui_impl_glfw.h"
 #include <GLFW/glfw3.h>
 
 using namespace key;
@@ -10,7 +11,10 @@ namespace key {
 void set_callback(GLFWwindow *window) {
   ::window = window;
 
-  glfwSetKeyCallback(window, [](GLFWwindow *window, int key, int scancode, int action, int mods) { events[key] = static_cast<Event>(action); });
+  glfwSetKeyCallback(window, [](GLFWwindow *window, int key, int scancode, int action, int mods) {
+    events[key] = static_cast<Event>(action);
+    ImGui_ImplGlfw_KeyCallback(window, key, scancode, action, mods);
+  });
 }
 
 bool get(int key) { return glfwGetKey(window, key); }

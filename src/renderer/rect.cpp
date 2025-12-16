@@ -34,7 +34,7 @@ void main() {
 }
 )";
 
-gl::Buffer<component::Rect> vertex(GL_ARRAY_BUFFER);
+gl::Buffer<RectComp> vertex(GL_ARRAY_BUFFER);
 gl::Array<vec2> base_vertex(GL_ARRAY_BUFFER);
 gl::VertexArray vao;
 GLuint shader;
@@ -50,15 +50,15 @@ namespace rect {
     vao.bind_buffer(base_vertex, sizeof(vec2));
     vao.add_attib(base_vertex, 0, 2, GL_FLOAT, false, 0);
 
-    vao.bind_buffer(vertex, sizeof(component::Rect), 1);
-    vao.add_attib(vertex, 1, 2, GL_FLOAT, false, offsetof(component::Rect, pos));
-    vao.add_iattib(vertex, 2, 2, GL_UNSIGNED_BYTE, offsetof(component::Rect, scale));
+    vao.bind_buffer(vertex, sizeof(RectComp), 1);
+    vao.add_attib(vertex, 1, 2, GL_FLOAT, false, offsetof(RectComp, pos));
+    vao.add_iattib(vertex, 2, 2, GL_UNSIGNED_BYTE, offsetof(RectComp, scale));
 
     shader = link_program(vert_shader, frag_shader);
   }
 
   void render(entt::registry &registry) {
-    auto &storage = registry.storage<component::Rect>();
+    auto &storage = registry.storage<RectComp>();
     vertex.update(*storage.raw(), storage.size());
 
     vao.bind();
