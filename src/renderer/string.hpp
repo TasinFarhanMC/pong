@@ -2,9 +2,9 @@
 #include <entt/entity/fwd.hpp>
 
 namespace renderer {
-namespace rect {
+namespace string {
   void init();
   void render(entt::registry &registry);
   void clean();
-} // namespace rect
+} // namespace string
 } // namespace renderer

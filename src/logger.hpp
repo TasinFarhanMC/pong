@@ -4,12 +4,24 @@
 namespace logger {
 std::string current_time();
 
-bool init(bool console);
+bool init(bool info, bool verbose);
 void clean();
+void write_verb(const std::string &str);
+void write_info(const std::string &str);
 void write(const std::string &str);
 
+#define LOG_VERB(name, fmt, ...)                                                                                                                       \
+  logger::write_verb(                                                                                                                                  \
+      std::format(                                                                                                                                     \
+          "[" name "] [{}/VERB] "                                                                                                                      \
+          "[" __FILE_NAME__ ":{}"                                                                                                                      \
+          "]: " fmt "\n",                                                                                                                              \
+          logger::current_time(), __LINE__, ##__VA_ARGS__                                                                                              \
+      )                                                                                                                                                \
+  )
+
 #define LOG_INFO(name, fmt, ...)                                                                                                                       \
-  logger::write(                                                                                                                                       \
+  logger::write_info(                                                                                                                                  \
       std::format(                                                                                                                                     \
           "[" name "] [{}/INFO] "                                                                                                                      \
           "[" __FILE_NAME__ ":{}"                                                                                                                      \
@@ -19,7 +31,7 @@ void write(const std::string &str);
   )
 
 #define LOG_WARN(name, fmt, ...)                                                                                                                       \
-  logger::write(                                                                                                                                       \
+  logger::write_info(                                                                                                                                  \
       std::format(                                                                                                                                     \
           "[" name "] [{}/WARN] "                                                                                                                      \
           "[" __FILE_NAME__ ":{}"                                                                                                                      \

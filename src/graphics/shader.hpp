@@ -16,7 +16,7 @@ inline GLuint compile_shader(GLenum type, const char *src) {
 
     glGetShaderInfoLog(shader, lenght, nullptr, log);
 
-    LOG_INFO("Init", "Shader Compilation Failed:\n{}", log);
+    LOG_ERROR("Graphics/Shader", "Shader Compilation Failed {}: {{\n{}\n}}", shader, log);
 
     delete[] log;
     glDeleteShader(shader);
@@ -44,7 +44,7 @@ inline GLuint link_program(const char *vertex, const char *fragment) {
 
     glGetProgramInfoLog(program, length, nullptr, log);
 
-    LOG_INFO("Init", "Shader Program Linking Failed:\n{}", log);
+    LOG_ERROR("Graphics/Shader", "Shader Program Linking Failed: {}\n{}", program, log);
 
     delete[] log;
     glDeleteProgram(program);

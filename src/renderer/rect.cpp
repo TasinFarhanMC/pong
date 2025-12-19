@@ -1,9 +1,8 @@
 #include <component/rect.hpp>
 #include <entt/entt.hpp>
-#include <gltypes.hpp>
-#include <iostream>
+#include <graphics/gltypes.hpp>
+#include <graphics/shader.hpp>
 #include <logger.hpp>
-#include <shader.hpp>
 
 constexpr const char *vert_shader = R"(
 #version 330 core
@@ -34,10 +33,10 @@ void main() {
 }
 )";
 
-gl::Buffer<RectComp> vertex(GL_ARRAY_BUFFER);
-gl::Array<vec2> base_vertex(GL_ARRAY_BUFFER);
-gl::VertexArray vao;
-GLuint shader;
+static gl::Buffer<RectComp> vertex(GL_ARRAY_BUFFER);
+static gl::Array<vec2> base_vertex(GL_ARRAY_BUFFER);
+static gl::VertexArray vao;
+static GLuint shader;
 
 namespace renderer {
 namespace rect {

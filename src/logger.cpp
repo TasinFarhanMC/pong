@@ -7,7 +7,7 @@
 using namespace logger;
 
 static std::ofstream file;
-static bool console;
+static bool info, verbose;
 
 namespace logger {
 std::string current_time() {
@@ -20,14 +20,27 @@ std::string current_time() {
   return ss.str();
 }
 
-bool init(bool console) {
-  ::console = console;
+bool init(bool info, bool verbose) {
+  ::info = info;
+  ::verbose = verbose;
   file.open("latest.log");
   return file.is_open();
 }
 
+void write_verb(const std::string &str) {
+  if (verbose) {
+    if (info) { std::cout << str; }
+    file << str;
+  }
+}
+
+void write_info(const std::string &str) {
+  if (info) { std::cout << str; }
+  file << str;
+}
+
 void write(const std::string &str) {
-  if (console) { std::cout << str; }
+  std::cout << str;
   file << str;
 }
 void clean() { file.close(); }

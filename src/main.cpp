@@ -5,26 +5,27 @@
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
+#include <iostream>
 #include <key.hpp>
 #include <logger.hpp>
-#include <print>
 
 using namespace std::chrono_literals;
 
 int main(int argc, char *argv[]) {
-  bool console = false;
+  bool info = false, verbose = false;
 
-  if (argc >= 2) {
+  for (int i = 1; i < argc; i++) {
     std::string arg = argv[1];
-    if (arg == "--c" || arg == "--console") { console = true; }
+    if (arg == "-c" || arg == "--console") { info = true; }
+    if (arg == "-v" || arg == "--verbose") { verbose = true; }
   }
 
-  if (!logger::init(console)) { std::println("Unable to init logger"); };
+  if (!logger::init(info, verbose)) { std::cerr << "Unable to init logger" << std::endl; };
 
-  glfwSetErrorCallback([](int error, const char *desc) { LOG_ERROR("Init", "GLFW Error ({}): {}", error, desc); });
+  glfwSetErrorCallback([](int error, const char *desc) { LOG_ERROR("Window", "GLFW Error ({}): {}", error, desc); });
 
   if (!glfwInit()) {
-    LOG_ERROR("Init", "Failed to initialize GLFW");
+    LOG_ERROR("Window", "Failed to initialize GLFW");
     return -1;
   }
 
@@ -36,7 +37,7 @@ int main(int argc, char *argv[]) {
   GLFWwindow *window = glfwCreateWindow(100, 100, "Pong", NULL, NULL);
 
   if (!window) {
-    LOG_ERROR("Init", "Failed to create GLFW window");
+    LOG_ERROR("Window", "Failed to create GLFW window");
     glfwTerminate();
     return -1;
   }
@@ -54,7 +55,7 @@ int main(int argc, char *argv[]) {
 
   glfwMakeContextCurrent(window);
   if (!gladLoadGL(glfwGetProcAddress)) {
-    LOG_ERROR("Init", "Unable to load GL");
+    LOG_ERROR("Graphics/GL", "Unable to load GL");
     return -1;
   }
 
@@ -75,7 +76,7 @@ int main(int argc, char *argv[]) {
 
   init();
 
-  LOG_INFO("Init", "Starting Loop");
+  LOG_INFO("Game", "Starting Loop");
   float delta_t = 0;
   float accumilator = 0;
 
@@ -102,7 +103,7 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  LOG_INFO("Init", "Clean Up");
+  LOG_INFO("Game", "Clean Up");
 
   ImGui_ImplOpenGL3_Shutdown();
   ImGui_ImplGlfw_Shutdown();

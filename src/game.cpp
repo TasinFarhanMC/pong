@@ -1,13 +1,15 @@
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
-#include "imgui_internal.h"
-#include "key.hpp"
 #include <component/physics.hpp>
 #include <component/rect.hpp>
+#include <component/string.hpp>
 #include <entt/entt.hpp>
 #include <game.hpp>
 #include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
+#include <imgui_internal.h>
+#include <key.hpp>
 #include <renderer/rect.hpp>
+#include <renderer/string.hpp>
 
 entt::registry registry;
 entt::entity ball;
@@ -106,8 +108,12 @@ void init() {
 
   auto &paddle1 = registry.get<RectComp>(paddle[1]);
   paddle1.pos.x = SPACE_WIDTH - (paddle1.pos.x + paddle1.scale.x);
+  const auto text = registry.create();
+
+  registry.emplace<StringComp>(text, vec2(0), 10, "012");
 
   renderer::rect::init();
+  renderer::string::init();
 }
 
 void render(float delta_t) {
@@ -135,6 +141,7 @@ void render(float delta_t) {
   update_pos(registry, delta_t);
 
   renderer::rect::render(registry);
+  renderer::string::render(registry);
 
   // 4. Render ImGui
   ImGui::Render();
@@ -171,9 +178,15 @@ void update(float delta_t) {
     vel1 = dir * 150;
     col1 = 0;
   }
+
+  if (key::get_event(key::Event::Press, GLFW_KEY_R)) {
+    renderer::string::clean();
+    renderer::string::init();
+  }
 }
 
 void clean() {
   registry.clear();
   renderer::rect::clean();
+  renderer::string::clean();
 }
