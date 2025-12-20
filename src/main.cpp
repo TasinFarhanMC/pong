@@ -43,9 +43,9 @@ int main(int argc, char *argv[]) {
   }
 
   glfwSetFramebufferSizeCallback(window, [](GLFWwindow *window, int width, int height) {
-    float min = std::min(width / SPACE_WIDTH, height / SPACE_HEIGHT);
-    float m_width = min * SPACE_WIDTH;
-    float m_height = min * SPACE_HEIGHT;
+    float min = std::min(width / SPACE.x, height / SPACE.y);
+    float m_width = min * SPACE.x;
+    float m_height = min * SPACE.y;
 
     glViewport(std::abs(width - m_width) / 2, std::abs(height - m_height) / 2, m_width, m_height);
   });

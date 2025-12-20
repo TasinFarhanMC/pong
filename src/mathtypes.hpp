@@ -9,3 +9,5 @@ using glm::vec4;
 using glm::ivec2;
 using glm::u8vec2;
 using glm::uvec2;
+
+using glm::u8;

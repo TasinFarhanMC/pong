@@ -6,8 +6,8 @@
 
 struct StringComp {
   vec2 pos;
-  unsigned char scale;
-  unsigned char count;
+  u8 scale;
+  u8 count;
   char data[14] {};
 
   constexpr StringComp(vec2 pos, unsigned char scale, std::string_view str) : pos(pos), scale(scale) {
