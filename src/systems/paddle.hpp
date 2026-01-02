@@ -36,7 +36,7 @@ inline void handle_paddle_input(entt::registry &registry, const entt::entity *pa
   }
 }
 
-inline void handle_paddle_collision(entt::registry &registry, const std::span<entt::entity> paddles, float delta_t) {
+inline void handle_paddle_collision(entt::registry &registry, const std::span<entt::entity> paddles) {
   for (auto &entity : paddles) {
     auto &coll = registry.get<paddle::Collision>(entity).direction;
     if (coll != 0) { continue; }
@@ -47,11 +47,11 @@ inline void handle_paddle_collision(entt::registry &registry, const std::span<en
     float t1 = -pos.y / vel.y;
     float t2 = (SPACE.y - (pos.y + PADDLE_SIZE.y)) / vel.y;
 
-    if (t1 > 0 && t1 < delta_t) {
+    if (t1 > 0 && t1 < TICK_TIME) {
       coll = -1;
       vel.y = 0;
       pos.y = 0;
-    } else if (t2 > 0 && t2 < delta_t) {
+    } else if (t2 > 0 && t2 < TICK_TIME) {
       coll = 1;
       vel.y = 0;
       pos.y = SPACE.y - PADDLE_SIZE.y;

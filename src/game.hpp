@@ -15,5 +15,5 @@ constexpr float PADDLE_VEL_Y = 200.0f;
 
 void init();
 void render(float delta_t);
-void update(float delta_t);
+void update();
 void clean();

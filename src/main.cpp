@@ -2,9 +2,6 @@
 #include <chrono>
 #include <game.hpp>
 #include <glad/gl.h>
-#include <imgui.h>
-#include <imgui_impl_glfw.h>
-#include <imgui_impl_opengl3.h>
 #include <iostream>
 #include <key.hpp>
 #include <logger.hpp>
@@ -15,7 +12,7 @@ int main(int argc, char *argv[]) {
   bool info = false, verbose = false;
 
   for (int i = 1; i < argc; i++) {
-    std::string arg = argv[1];
+    std::string arg = argv[i];
     if (arg == "-c" || arg == "--console") { info = true; }
     if (arg == "-v" || arg == "--verbose") { verbose = true; }
   }
@@ -62,17 +59,8 @@ int main(int argc, char *argv[]) {
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  IMGUI_CHECKVERSION();
-  ImGui::CreateContext();
-  ImGuiIO &io = ImGui::GetIO();
-  (void)io;
-  ImGui::StyleColorsDark();
-
-  ImGui_ImplGlfw_InitForOpenGL(window, true);
-  ImGui_ImplOpenGL3_Init("#version 330");
-
   key::set_callback(window);
-  glfwSwapInterval(0);
+  // glfwSwapInterval(0);
 
   init();
 
@@ -98,16 +86,12 @@ int main(int argc, char *argv[]) {
 
     if (accumilator >= TICK_TIME) {
       if (key::get_event(key::Event::Press, GLFW_KEY_ESCAPE)) { glfwSetWindowShouldClose(window, true); }
-      update(delta_t);
+      update();
       accumilator -= TICK_TIME;
     }
   }
 
   LOG_INFO("Game", "Clean Up");
-
-  ImGui_ImplOpenGL3_Shutdown();
-  ImGui_ImplGlfw_Shutdown();
-  ImGui::DestroyContext();
 
   glfwSwapInterval(1);
   glfwDestroyWindow(window);

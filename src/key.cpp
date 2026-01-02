@@ -1,6 +1,6 @@
 #include "key.hpp"
 #include <GLFW/glfw3.h>
-#include <imgui_impl_glfw.h>
+// #include <imgui_impl_glfw.h>
 
 using namespace key;
 
@@ -13,7 +13,7 @@ void set_callback(GLFWwindow *window) {
 
   glfwSetKeyCallback(window, [](GLFWwindow *window, int key, int scancode, int action, int mods) {
     events[key] = static_cast<Event>(action);
-    ImGui_ImplGlfw_KeyCallback(window, key, scancode, action, mods);
+    // ImGui_ImplGlfw_KeyCallback(window, key, scancode, action, mods);
   });
 }
 
