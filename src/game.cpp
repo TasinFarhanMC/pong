@@ -25,7 +25,7 @@ void init() {
     entity = registry.create();
 
     registry.emplace<Velocity>(entity, 0, 0);
-    registry.emplace<paddle::Collision>(entity, 0);
+    registry.emplace<paddle::Collision>(entity, (char)0); // cast fixes msvc error
   }
 
   registry.emplace<RectComp>(paddles[0], PADDLE_POS, PADDLE_SIZE);

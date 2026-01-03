@@ -38,7 +38,3 @@ target_include_directories(pong PRIVATE ${INCLUDE_DIRS} ${stb_SOURCE_DIR})
 target_link_libraries(pong PRIVATE OpenGL::GL glm glfw fmt EnTT)
 target_compile_definitions(pong PRIVATE GLFW_INCLUDE_NONE
                                         PONG_SRC_DIR="${SRC_DIR}/")
-
-if(MSVC)
-  target_compile_options(pong PRIVATE /wd4244 /wd4305 /wd4267 /wd2397)
-endif()
