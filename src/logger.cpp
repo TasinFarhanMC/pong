@@ -1,6 +1,7 @@
 #include "logger.hpp"
 
 #include <chrono>
+#include <ctime>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -8,35 +9,40 @@
 using namespace logger;
 
 static std::ofstream file;
-static bool info, verbose;
+static bool info = false;
+static bool verbose = false;
 
 namespace logger {
+
 std::string current_time() {
   using namespace std::chrono;
   auto now = system_clock::now();
-  auto in_time_t = system_clock::to_time_t(now);
+  std::time_t now_c = system_clock::to_time_t(now);
+
+  std::tm local_tm {};
+  local_tm = *std::localtime(&now_c);
 
   std::ostringstream ss;
-  ss << std::put_time(std::localtime(&in_time_t), "%H:%M:%S");
+  ss << std::put_time(&local_tm, "%H:%M:%S");
   return ss.str();
 }
 
-bool init(bool info, bool verbose) {
-  ::info = info;
-  ::verbose = verbose;
-  file.open("latest.log");
+bool init(bool enable_info, bool enable_verbose) {
+  ::info = enable_info;
+  ::verbose = enable_verbose;
+  file.open("latest.log", std::ios::out | std::ios::trunc);
   return file.is_open();
 }
 
 void write_verb(const std::string &str) {
   if (verbose) {
-    if (info) { std::cout << str; }
+    if (info) std::cout << str;
     file << str;
   }
 }
 
 void write_info(const std::string &str) {
-  if (info) { std::cout << str; }
+  if (info) std::cout << str;
   file << str;
 }
 
@@ -44,5 +50,7 @@ void write(const std::string &str) {
   std::cout << str;
   file << str;
 }
+
 void clean() { file.close(); }
+
 } // namespace logger
