@@ -1,51 +1,28 @@
-# 🏓 Pong
+# Pong
 
-A modern, cross-platform Pong clone written in C++ using OpenGL and GLFW.
+A Pong clone written in C++ using OpenGL and GLFW. It is a testbed for implementing game optimizations.
 
 ![Screenshot](.github/screenshot.png)
 
 ---
 
-## 🚀 Features
-
-* ⚡ Fast and lightweight
-* 🎮 Simple keyboard controls
-* 🎨 ImGui-based debug UI
-* 🖼️ Digit-based score rendering
-* 🧹 Clean component structure
-* 📆 Cross-platform builds for Windows, Linux, and macOS
-
----
-
-## 👨‍🛠 Build Instructions
-
-### ❗ Requirements
+### Build Requirements
 
 * CMake (≥ 3.16)
-* C++23-capable compiler (MSVC, Clang, or GCC)
-* Git (for submodule cloning)
-
-### 📆 Dependencies
-
-Bundled as submodules:
-
-* [GLFW](https://github.com/glfw/glfw)
-* [Glad](https://github.com/Dav1dde/glad)
-* [ImGui](https://github.com/ocornut/imgui)
-* [GLM](https://github.com/g-truc/glm)
+* C++17-capable compiler (MSVC, Clang, or GCC)
 
 ---
 
-### 🧰 Build (Linux / macOS)
+### Build (Linux / macOS)
 
 ```bash
-git clone --recursive https://github.com/TasinFarhanMC/pong
+git clone https://github.com/TasinFarhanMC/pong
 cd pong
 cmake -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build
 ````
 
-### 🧰 Build (Windows, MSVC)
+### Build (Windows, MSVC)
 
 Use CMake GUI or:
 
@@ -54,50 +31,43 @@ cmake -B build -G "Visual Studio 17 2022" -A x64
 cmake --build build --config Release
 ```
 
-> 📂 Output binaries will be placed in `bin/`.
+> Output binaries will be placed in `bin/`.
 
 ---
 
-## 🎮 Controls
+## Controls
 
-| Key     | Action            |
-| ------- | ----------------- |
-| `W / S` | Move left paddle  |
-| `↑ / ↓` | Move right paddle |
-| `ENTER` | Pause / Unpause   |
-| `R`     | Reload Shaders    |
-| `ESC`   | Exit              |
+| Key     | Action              |
+| ------- | -----------------   |
+| `W / S` | Move left paddle    |
+| `↑ / ↓` | Move right paddle   |
+| `ENTER` | Start after a score |
+| `ESC`   | Exit                |
 
 ---
 
-## 📁 Assets
+## Assets
 
 Assets (fonts, shaders, textures) are located in the `assets/` folder and must be next to the binary.
 
 ---
 
-## 📦 Prebuilt Releases
+## Prebuilt Releases
 
 Download prebuilt versions:
 
 Released:
-
-* 🔗 [Linux Standalone x64](https://nightly.link/TasinFarhanMC/pong/workflows/ci.yaml/release/binaries-ubuntu-latest-clang.zip)
-* 🔗 [Windows Standalone x64](https://nightly.link/TasinFarhanMC/pong/workflows/ci.yaml/release/binaries-windows-latest-cl.zip)
+* [Release Page](https://github.com/TasinFarhanMC/pong/releases) for full catalogue of release
+* [Linux Standalone x64](https://github.com/TasinFarhanMC/pong/releases/latest/download/Pong_Linux_Standalone_x64.zip)
+* [Windows Standalone x64](https://github.com/TasinFarhanMC/pong/releases/latest/download/Pong_Windows_Standalone_x64.zip)
 
 InDev:
 
-* 🔗 [Linux Standalone x64](https://nightly.link/TasinFarhanMC/pong/workflows/ci.yaml/main/binaries-ubuntu-latest-clang.zip)
-* 🔗 [Windows Standalone x64](https://nightly.link/TasinFarhanMC/pong/workflows/ci.yaml/main/binaries-windows-latest-cl.zip)
+* [Linux Standalone x64](https://nightly.link/TasinFarhanMC/pong/workflows/ci.yaml/main/binaries-ubuntu-latest-clang.zip)
+* [Windows Standalone x64](https://nightly.link/TasinFarhanMC/pong/workflows/ci.yaml/main/binaries-windows-latest-cl.zip)
 
 ---
 
-## 🧪 Development
-
-Enable ImGui debug overlay and tweak game constants in `src/`.
-
----
-
-## 📄 License
+## License
 
 MIT License © 2025 [Tasin Farhan](https://github.com/TasinFarhanMC)
