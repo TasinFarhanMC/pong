@@ -23,14 +23,15 @@ inline void handle_ball_wall_collision(entt::registry &registry, entt::entity ba
   }
 }
 
-inline void handle_ball_paddle_collision(entt::registry &registry, entt::entity ball, const std::span<entt::entity> paddles) {
+inline void handle_ball_paddle_collision(entt::registry &registry, entt::entity ball, const entt::entity *paddles) {
   vec2 &ball_pos = registry.get<RectComp>(ball).pos;
   vec2 &ball_vel = registry.get<Velocity>(ball);
   const vec2 &ball_size = registry.get<RectComp>(ball).scale;
 
   if (ball_vel.x == 0 && ball_vel.y == 0) { return; }
 
-  for (auto &paddle : paddles) {
+  for (int i = 0; i < 2; i++) {
+    const entt::entity paddle = paddles[i];
     const vec2 &paddle_pos = registry.get<RectComp>(paddle).pos;
     const vec2 &paddle_size = registry.get<RectComp>(paddle).scale;
     const vec2 &paddle_vel = registry.get<Velocity>(paddle);

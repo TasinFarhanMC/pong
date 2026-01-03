@@ -11,6 +11,7 @@ cpmaddpackage(URI "gh:glfw/glfw#3.4" OPTIONS "GLM_ENABLE_SIMD_SSE4_2 ON"
 cpmaddpackage("gh:g-truc/glm#1.0.1")
 cpmaddpackage("gh:skypjack/entt@3.15.0")
 cpmaddpackage("gh:nothings/stb#master")
+cpmaddpackage("gh:fmtlib/fmt#12.1.0")
 
 # cpmaddpackage( NAME Imgui GIT_REPOSITORY "https://github.com/ocornut/imgui"
 # VERSION 1.92.1 DOWNLOAD_ONLY)
@@ -29,11 +30,11 @@ set(INCLUDE_DIRS "${SRC_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 file(GLOB_RECURSE SRC_FILES "${SRC_DIR}/*.c" "${SRC_DIR}/*.cpp")
 
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(pong "${SRC_FILES}")
 target_include_directories(pong PRIVATE ${INCLUDE_DIRS} ${stb_SOURCE_DIR})
-target_link_libraries(pong PRIVATE OpenGL::GL glm glfw EnTT)
-target_compile_definitions(pong PRIVATE GLFW_INCLUDE_NONE)
-set_target_properties(pong PROPERTIES CXX_SCAN_FOR_MODULES OFF)
+target_link_libraries(pong PRIVATE OpenGL::GL glm glfw fmt EnTT)
+target_compile_definitions(pong PRIVATE GLFW_INCLUDE_NONE
+                                        PONG_SRC_DIR="${SRC_DIR}/")

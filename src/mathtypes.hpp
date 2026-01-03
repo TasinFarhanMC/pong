@@ -2,6 +2,8 @@
 
 #include <glm/glm.hpp>
 
+constexpr float PI = 3.14159265358979323846f;
+
 using glm::vec2;
 using glm::vec3;
 using glm::vec4;

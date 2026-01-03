@@ -36,8 +36,10 @@ inline void handle_paddle_input(entt::registry &registry, const entt::entity *pa
   }
 }
 
-inline void handle_paddle_collision(entt::registry &registry, const std::span<entt::entity> paddles) {
-  for (auto &entity : paddles) {
+inline void handle_paddle_collision(entt::registry &registry, const entt::entity *paddles) {
+  for (int i = 0; i < 2; i++) {
+    entt::entity entity = paddles[i];
+
     auto &coll = registry.get<paddle::Collision>(entity).direction;
     if (coll != 0) { continue; }
 

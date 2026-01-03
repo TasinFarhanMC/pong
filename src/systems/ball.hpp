@@ -1,5 +1,4 @@
 #pragma once
-
 #include <component/physics.hpp>
 #include <component/rect.hpp>
 #include <entt/entt.hpp>
@@ -11,7 +10,7 @@ static std::mt19937 gen(std::random_device {}());
 inline void set_ball_initial_vel(entt::registry &registry, entt::entity ball) {
   constexpr float SPEED = 100;
   constexpr float SPREAD = 90;
-  constexpr float sigma = SPREAD / 3 * std::numbers::pi_v<float> / 180;
+  constexpr float sigma = SPREAD / 3 * PI / 180;
 
   std::normal_distribution<float> angle_dist(0, sigma);
   float angle = angle_dist(gen);

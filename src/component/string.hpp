@@ -1,30 +1,21 @@
 #pragma once
 
-#include <algorithm>
 #include <mathtypes.hpp>
 #include <string_view>
 
+struct StringComp;
+
 struct StringComp {
-  vec2 pos;
+  glm::vec2 pos;
   u8 scale;
   u8 count;
   char data[14] {};
 
-  constexpr StringComp(vec2 pos, unsigned char scale, std::string_view str) : pos(pos), scale(scale) {
-    count = str.size() < 14 ? str.size() : 14;
-    std::copy(str.begin(), str.begin() + count, data);
+  constexpr StringComp(glm::vec2 pos, u8 scale, u8 count, std::string_view str) : pos(pos), scale(scale), count((count < 14 ? count : 14)) {
+    for (u8 i = 0; i < this->count; ++i) data[i] = str[i];
   }
 
-  constexpr StringComp(float x, float y, unsigned char scale, std::string_view str) : pos(x, y), scale(scale) {
-    count = str.size() < 14 ? str.size() : 14;
-    std::copy(str.begin(), str.begin() + count, data);
-  }
-
-  constexpr StringComp(vec2 pos, unsigned char scale, unsigned char count, std::string_view str) : pos(pos), scale(scale), count(count) {
-    std::copy(str.begin(), str.begin() + (str.size() < 14 ? str.size() : 14), data);
-  }
-
-  constexpr StringComp(float x, float y, unsigned char scale, unsigned char count, std::string_view str) : pos(x, y), scale(scale), count(count) {
-    std::copy(str.begin(), str.begin() + (str.size() < 14 ? str.size() : 14), data);
-  }
+  constexpr StringComp(glm::vec2 pos, u8 scale, std::string_view str) : StringComp(pos, scale, static_cast<u8>(str.size()), str) {}
+  constexpr StringComp(float x, float y, u8 scale, u8 count, std::string_view str) : StringComp(vec2(x, y), scale, count, str) {}
+  constexpr StringComp(float x, float y, u8 scale, std::string_view str) : StringComp(vec2(x, y), scale, str) {}
 };

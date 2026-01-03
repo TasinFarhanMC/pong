@@ -1,5 +1,7 @@
 #pragma once
-#include <format>
+#include <fmt/core.h>
+
+#define __REL_FILE__ (__FILE__ + sizeof(PONG_SRC_DIR) - 1)
 
 namespace logger {
 std::string current_time();
@@ -10,43 +12,43 @@ void write_verb(const std::string &str);
 void write_info(const std::string &str);
 void write(const std::string &str);
 
-#define LOG_VERB(name, fmt, ...)                                                                                                                       \
+#define LOG_VERB(name, fmt_str, ...)                                                                                                                   \
   logger::write_verb(                                                                                                                                  \
-      std::format(                                                                                                                                     \
+      fmt::format(                                                                                                                                     \
           "[" name "] [{}/VERB] "                                                                                                                      \
-          "[" __FILE_NAME__ ":{}"                                                                                                                      \
-          "]: " fmt "\n",                                                                                                                              \
-          logger::current_time(), __LINE__, ##__VA_ARGS__                                                                                              \
+          "[{}:{}"                                                                                                                                     \
+          "]: " fmt_str "\n",                                                                                                                          \
+          logger::current_time(), __REL_FILE__, __LINE__, ##__VA_ARGS__                                                                                \
       )                                                                                                                                                \
   )
 
-#define LOG_INFO(name, fmt, ...)                                                                                                                       \
+#define LOG_INFO(name, fmt_str, ...)                                                                                                                   \
   logger::write_info(                                                                                                                                  \
-      std::format(                                                                                                                                     \
+      fmt::format(                                                                                                                                     \
           "[" name "] [{}/INFO] "                                                                                                                      \
-          "[" __FILE_NAME__ ":{}"                                                                                                                      \
-          "]: " fmt "\n",                                                                                                                              \
-          logger::current_time(), __LINE__, ##__VA_ARGS__                                                                                              \
+          "[{}:{}"                                                                                                                                     \
+          "]: " fmt_str "\n",                                                                                                                          \
+          logger::current_time(), __REL_FILE__, __LINE__, ##__VA_ARGS__                                                                                \
       )                                                                                                                                                \
   )
 
-#define LOG_WARN(name, fmt, ...)                                                                                                                       \
+#define LOG_WARN(name, fmt_str, ...)                                                                                                                   \
   logger::write_info(                                                                                                                                  \
-      std::format(                                                                                                                                     \
+      fmt::format(                                                                                                                                     \
           "[" name "] [{}/WARN] "                                                                                                                      \
-          "[" __FILE_NAME__ ":{}"                                                                                                                      \
-          "]: " fmt "\n",                                                                                                                              \
-          logger::current_time(), __LINE__, ##__VA_ARGS__                                                                                              \
+          "[{}:{}"                                                                                                                                     \
+          "]: " fmt_str "\n",                                                                                                                          \
+          logger::current_time(), __REL_FILE__, __LINE__, ##__VA_ARGS__                                                                                \
       )                                                                                                                                                \
   )
 
-#define LOG_ERROR(name, fmt, ...)                                                                                                                      \
+#define LOG_ERROR(name, fmt_str, ...)                                                                                                                  \
   logger::write(                                                                                                                                       \
-      std::format(                                                                                                                                     \
+      fmt::format(                                                                                                                                     \
           "[" name "] [{}/ERROR] "                                                                                                                     \
-          "[" __FILE_NAME__ ":{}"                                                                                                                      \
-          "]: " fmt "\n",                                                                                                                              \
-          logger::current_time(), __LINE__, ##__VA_ARGS__                                                                                              \
+          "[{}:{}"                                                                                                                                     \
+          "]: " fmt_str "\n",                                                                                                                          \
+          logger::current_time(), __REL_FILE__, __LINE__, ##__VA_ARGS__                                                                                \
       )                                                                                                                                                \
   )
 } // namespace logger
